@@ -13,6 +13,19 @@ export class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const contactsFromLS = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(contactsFromLS) ?? [];
+
+    this.setState({ contacts: parsedContacts });
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (prevState.contacts.length !== this.state.contacts.length) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   addContact = formData => {
     // { name: "Rosie Simpson", number: "+16516" }
     if (
